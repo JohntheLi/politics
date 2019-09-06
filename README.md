@@ -17,6 +17,12 @@ Personalized political news feed. Built using Flutter and can be compiled into b
   * Browser: Opens in-app browser for article viewing. This enables users to view the full article along with pictures.
   ![alt text](https://i.imgur.com/kaU1cu6.png)
 
+* Personal Analytics 
+  * Quiz: Includes a political typology quiz the first time the app is opened to set an estimate on the user's political beliefs.
+  * Political Spectrum Graph: Plots the user's political side based off of data from quiz and liked items
+  * Item/topic analysis: Includes plots to indicate what percentage of items in a certain topic are republican and democratic. This is intended to unveil the political stances of the user for specific subjects.
+  ![alt text](https://i.imgur.com/Iv9kJbl.png)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
