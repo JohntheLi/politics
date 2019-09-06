@@ -25,6 +25,9 @@ dependencies:
   flutter_inappbrowser: ^1.2.1
   random_string: ^1.1.0
   path_provider: ^1.2.0
+  flutter_swiper: ^1.1.6
+  shared_preferences: ^0.5.3+4
+  percent_indicator: ^2.1.1+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -55,6 +58,7 @@ flutter:
     - assets/data/bills.txt
     - assets/data/tweets.txt
     - assets/keys.txt
+    - assets/political_snapshot.png
 
   #  - images/a_dot_ham.jpeg
 

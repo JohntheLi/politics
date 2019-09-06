@@ -59,7 +59,7 @@ class Classifier{
     //print(query);
     //print(query.length);
     return loadKeys().then((keys){
-      String xAPIKey = keys.split("\n")[0];
+      String xAPIKey = keys.split("\r\n")[0];
       return http.post(
         url,
         headers: {

@@ -5,6 +5,7 @@ import './models/article.dart';
 import './MyInAppBrowser.dart';
 
 import 'dart:io';
+
 /*
 This contains formatting for elections tab
  */
@@ -23,10 +24,30 @@ class _ElectionModulesState extends State<ElectionModules> {
 
   final List<String> reps = ["Trump", "Weld"];
 
-  final List<String> dems = ["Bennet", "Biden", "Blasio", "de Blasio", "Booker",
-  "Bullock", "Buttigieg", "Castro", "Delaney", "Gabbard", "Gillibrand", "Harris",
-  "Klobuchar", "Messam", "O'Rourke", "Ryan", "Sanders", "Sestak", "Steyer",
-  "Warren", "Williamson", "Yang"];
+  final List<String> dems = [
+    "Bennet",
+    "Biden",
+    "Blasio",
+    "de Blasio",
+    "Booker",
+    "Bullock",
+    "Buttigieg",
+    "Castro",
+    "Delaney",
+    "Gabbard",
+    "Gillibrand",
+    "Harris",
+    "Klobuchar",
+    "Messam",
+    "O'Rourke",
+    "Ryan",
+    "Sanders",
+    "Sestak",
+    "Steyer",
+    "Warren",
+    "Williamson",
+    "Yang"
+  ];
 
   Map<Article, bool> articleHeartMap;
   Map<Article, bool> articleBrokenHeartMap;
@@ -98,7 +119,6 @@ class _ElectionModulesState extends State<ElectionModules> {
     });
   }
 
-
   Color getPartyColor(String party) {
     if (party == "dem") {
       return Color.fromARGB(255, 55, 171, 180);
@@ -139,15 +159,32 @@ class _ElectionModulesState extends State<ElectionModules> {
     String result1 = parts[0].split(" ")[1];
     String person2 = parts[1].split(" ")[0];
     String result2 = parts[1].split(" ")[1];
-    print("Person1: " + person1 + ", " + result1 + " Person2: " + person2 + ", " + result2);
+    print("Person1: " +
+        person1 +
+        ", " +
+        result1 +
+        " Person2: " +
+        person2 +
+        ", " +
+        result2);
     print("Name: " + name);
     //person1 = person1 + " (" + result1 + ")";
     //person2 = person2 + " (" + result2 + ")";
-    if(name.indexOf(person1) == -1 || name.indexOf(person2) == -1){
+    if (name.indexOf(person1) == -1 || name.indexOf(person2) == -1) {
       return name;
     }
-    var lowerIndex = (name.indexOf(person1) < name.indexOf(person2)) ? name.indexOf(person1) : name.indexOf(person2);
-    String composite = name.substring(0, lowerIndex) + person1 + " (" + result1 + ") vs. " + person2 + " (" + result2 + ")";
+    var lowerIndex = (name.indexOf(person1) < name.indexOf(person2))
+        ? name.indexOf(person1)
+        : name.indexOf(person2);
+    String composite = name.substring(0, lowerIndex) +
+        person1 +
+        " (" +
+        result1 +
+        ") vs. " +
+        person2 +
+        " (" +
+        result2 +
+        ")";
     return composite;
   }
 
@@ -175,7 +212,7 @@ class _ElectionModulesState extends State<ElectionModules> {
   String result2(String result) {
     result = result.substring(1, result.length - 1);
     List<String> parts = result.split(", ");
-    for(String s in parts){
+    for (String s in parts) {
       print(result);
       print("Part: " + s);
     }
@@ -185,77 +222,226 @@ class _ElectionModulesState extends State<ElectionModules> {
 
   @override
   Widget build(BuildContext context) {
-
     List<Widget> newsCards = widget.news
         .map((element) => Card(
-      child: InkWell(
-        onTap: () async {
-          await inAppBrowser.open(url: element.url, options: {
-            "useShouldOverrideUrlLoading": true,
-            "useOnLoadResource": true
-          });
-        },
-        onDoubleTap: () {
-          isLiked(element.id).then((_liked) {
-            if (!_liked) {
-              print("LIKING--------");
-              likeArticle(element).then((_) {
-                setState(() {
-                  articleBrokenHeartMap.update(element, (_) => false);
-                  articleHeartMap.update(element, (_) => true);
-                });
-                Future.delayed(Duration(seconds: 2)).then((_) {
-                  setState(() {
-                    articleHeartMap.update(element, (_) => false);
+              child: InkWell(
+                onTap: () async {
+                  await inAppBrowser.open(url: element.url, options: {
+                    "useShouldOverrideUrlLoading": true,
+                    "useOnLoadResource": true
                   });
-                });
-              });
-            } else {
-              unlike(element.id).then((_) {
-                print("UNLIKING++++++++++++++");
-                setState(() {
-                  articleHeartMap.update(element, (_) => false);
-                  articleBrokenHeartMap.update(element, (_) => true);
-                });
-                Future.delayed(Duration(seconds: 2)).then((_) {
-                  setState(() {
-                    articleBrokenHeartMap.update(element, (_) => false);
+                },
+                onDoubleTap: () {
+                  isLiked(element.id).then((_liked) {
+                    if (!_liked) {
+                      print("LIKING--------");
+                      likeArticle(element).then((_) {
+                        setState(() {
+                          articleBrokenHeartMap.update(element, (_) => false);
+                          articleHeartMap.update(element, (_) => true);
+                        });
+                        Future.delayed(Duration(seconds: 2)).then((_) {
+                          setState(() {
+                            articleHeartMap.update(element, (_) => false);
+                          });
+                        });
+                      });
+                    } else {
+                      unlike(element.id).then((_) {
+                        print("UNLIKING++++++++++++++");
+                        setState(() {
+                          articleHeartMap.update(element, (_) => false);
+                          articleBrokenHeartMap.update(element, (_) => true);
+                        });
+                        Future.delayed(Duration(seconds: 2)).then((_) {
+                          setState(() {
+                            articleBrokenHeartMap.update(element, (_) => false);
+                          });
+                        });
+                      });
+                    }
                   });
-                });
-              });
-            }
-          });
-        },
-        child: Stack(alignment: Alignment.center, children: [
-          Column(children: [
-            Image(
-              image: NetworkImage(element.image),
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width - 4.0,
-              height: (MediaQuery.of(context).size.width - 4.0) * 0.5,
-            ),
-            Container(
-                padding: EdgeInsets.all(5.0),
+                },
+                child: Stack(alignment: Alignment.center, children: [
+                  Column(children: [
+                    Image(
+                      image: NetworkImage(element.image),
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width - 4.0,
+                      height: (MediaQuery.of(context).size.width - 4.0) * 0.5,
+                    ),
+                    Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(2.0),
+                              child: Text(
+                                element.description
+                                    .replaceAll("<b>", "")
+                                    .replaceAll("</b>", ""),
+                                textScaleFactor: 1.4,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: Text(
+                                    element.provider.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(166, 166, 166, 166),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: Text(
+                                    cleanDate(element.date),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(166, 166, 166, 166),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        )),
+                  ]),
+                  articleHeartMap[element]
+                      ? Positioned(
+                          child: Opacity(
+                            opacity: 0.85,
+                            child: Icon(
+                              Icons.favorite,
+                              size: 80.0,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  articleBrokenHeartMap[element]
+                      ? Positioned(
+                          child: Opacity(
+                            opacity: 0.85,
+                            child: Icon(
+                              Icons.favorite_border,
+                              size: 80.0,
+                            ),
+                          ),
+                        )
+                      : Container()
+                ]),
+              ),
+            ))
+        .toList();
+
+    List<Widget> pollsCards = widget.polls
+        .map((element) => Card(
+              child: Container(
+                padding: EdgeInsets.all(2.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(2.0),
-                      child: Text(
-                        element.description
-                            .replaceAll("<b>", "")
-                            .replaceAll("</b>", ""),
-                        textScaleFactor: 1.4,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 100.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    person1(element.data),
+                                    textScaleFactor: 1.6,
+                                    style: TextStyle(
+                                      color: getPartyColorForCandidate(
+                                          person1(element.data)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    result1(element.data),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(
+                                        color: getWinningColor(
+                                            result1(element.data),
+                                            result2(element.data))),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 80,
+                          child: VerticalDivider(
+                            color: Color.fromARGB(255, 166, 166, 166),
+                          ),
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    person2(element.data),
+                                    textScaleFactor: 1.6,
+                                    style: TextStyle(
+                                      color: getPartyColorForCandidate(
+                                          person2(element.data)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    result2(element.data),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(
+                                        color: getWinningColor(
+                                            result2(element.data),
+                                            result1(element.data))),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    Container(
+                        padding: EdgeInsets.all(2.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                element.name
+                                    .substring(1, element.name.length - 1),
+                              ),
+                            ])),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(2.0),
                           child: Text(
-                            element.provider.toUpperCase(),
+                            element.source
+                                .substring(1, element.source.length - 1),
                             style: TextStyle(
                               color: Color.fromARGB(166, 166, 166, 166),
                             ),
@@ -264,160 +450,20 @@ class _ElectionModulesState extends State<ElectionModules> {
                         Container(
                           padding: EdgeInsets.all(2.0),
                           child: Text(
-                            cleanDate(element.date),
+                            "Spread: " +
+                                element.result
+                                    .substring(1, element.result.length - 1),
                             style: TextStyle(
                               color: Color.fromARGB(166, 166, 166, 166),
                             ),
                           ),
-                        ),
+                        )
                       ],
-                    )
+                    ),
                   ],
-                )),
-          ]),
-          articleHeartMap[element]
-              ? Positioned(
-            child: Opacity(
-              opacity: 0.85,
-              child: Icon(
-                Icons.favorite,
-                size: 80.0,
-              ),
-            ),
-          )
-              : Container(),
-          articleBrokenHeartMap[element]
-              ? Positioned(
-            child: Opacity(
-              opacity: 0.85,
-              child: Icon(
-                Icons.favorite_border,
-                size: 80.0,
-              ),
-            ),
-          )
-              : Container()
-        ]),
-      ),
-    ))
-        .toList();
-
-
-    List<Widget> pollsCards = widget.polls
-        .map((element) => Card(
-      child: Container(
-        padding: EdgeInsets.all(2.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 100.0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                              person1(element.data),
-                              textScaleFactor: 1.6,
-                              style: TextStyle(
-                                color: getPartyColorForCandidate(person1(element.data)),
-                              ),
-                          ),
-                        ],
-                      ),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: <Widget>[
-                         Text(
-                             result1(element.data),
-                             textScaleFactor: 1.7,
-                              style: TextStyle(
-                                color: getWinningColor(result1(element.data), result2(element.data))
-                              ),
-                         ),
-                       ],
-                     )
-
-                    ],
-                    ),
-                  ),
-                  Container(
-                    height: 80, child: VerticalDivider( color: Color.fromARGB(255, 166, 166, 166),),
-                  ),
-                  Container(
-                    height: 100.0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            person2(element.data),
-                            textScaleFactor: 1.6,
-                            style: TextStyle(
-                              color: getPartyColorForCandidate(person2(element.data)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            result2(element.data),
-                            textScaleFactor: 1.7,
-                            style: TextStyle(
-                                color: getWinningColor(result2(element.data), result1(element.data))
-                            ),
-                          ),
-                        ],
-                      )
-
-                    ],
-                  ),
                 ),
-                ],),
-            Container(
-              padding: EdgeInsets.all(2.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text(
-                  element.name.substring(1, element.name.length - 1),
-              ),])
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(2.0),
-                  child: Text(
-                      element.source.substring(1, element.source.length - 1),
-                      style: TextStyle(
-                        color: Color.fromARGB(166, 166, 166, 166),
-                      ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(2.0),
-                  child: Text(
-                      "Spread: " + element.result.substring(1, element.result.length - 1),
-                      style: TextStyle(
-                      color: Color.fromARGB(166, 166, 166, 166),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    ))
+              ),
+            ))
         .toList();
 
 //    List<Widget> pollsCards = polls
@@ -458,7 +504,6 @@ class _ElectionModulesState extends State<ElectionModules> {
 //      ),
 //    ))
 //        .toList();
-
 
     return Container(
       child: Column(children: [

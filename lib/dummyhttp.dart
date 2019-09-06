@@ -74,7 +74,7 @@ class Dummy {
     var url = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/NewsSearchAPI?autoCorrect=true&pageNumber=" + pageno + "&pageSize=" + pagesize +
         "&q=" + topic + "&safeSearch=false";
     return loadKeys().then((keys){
-      String xAPIkey = keys.split("\n")[0];
+      String xAPIkey = keys.split("\r\n")[0];
       return http.get(
         url,
         headers: {
@@ -98,7 +98,7 @@ class Dummy {
   Future<List<Bill>> updateBills(String topic) async{
     var url = "https://api.propublica.org/congress/v1/bills/search.json?query=" + topic;
     return loadKeys().then((keys) {
-      String xAPIkey = keys.split("\n")[1];
+      String xAPIkey = keys.split("\r\n")[1];
       return http.get(
         url,
         headers: {
@@ -118,7 +118,7 @@ class Dummy {
                   sponsor: data[i]['sponsor_name'],
                   sponsorState: data[i]['sponsor_state'],
                   sponsorParty: data[i]['sponsor_party'],
-                  url: data[i]['bill_uri'],
+                  url: data[i]['congressdotgov_url'],
                   action: data[i]['latest_major_action'],
                   id: randomAlphaNumeric(10)));
         }
@@ -131,7 +131,7 @@ class Dummy {
     var count = 20;
     const url = "https://api.twitter.com/1.1/lists/statuses.json?list_id=34179516&count=20";
     return loadKeys().then((keys){
-      String twitterKey = keys.split("\n")[2];
+      String twitterKey = keys.split("\r\n")[2];
       return http.get(
         url,
         headers: {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:flutter/services.dart' show rootBundle;
 
 import './modules.dart';
 import './election_modules.dart';
@@ -10,6 +10,7 @@ import './classifier.dart';
 import './models/bill.dart';
 import './models/tweet.dart';
 import './models/poll.dart';
+import './profile_page.dart';
 
 import 'dart:io';
 
@@ -37,6 +38,8 @@ class ModuleManagerState extends State<ModuleManager>{
   List<Tweet> tweetHolder = [];
   List<Bill> billHolder = [];
   String itemHolder = "memes";
+  double y = 5.0;
+  double x = 5.0;
 
   var classifier = Classifier();
   var httpManager = Dummy();
@@ -98,9 +101,18 @@ class ModuleManagerState extends State<ModuleManager>{
         });
       });
     });
+    loadStance().then((stance){
+      y = double.parse(stance.split(", ")[0]);
+      x = double.parse(stance.split(", ")[1]);
+    });
     super.initState();
   }
-
+  Future<String> loadStance() async{
+    return _localPath.then((path){
+      File f = File('$path/userPoliticalSides.txt');
+      return f.readAsStringSync();
+    });
+  }
   Future<void> loadBillAndArticleForTopic() async{
     int min = (allItems.length < present + perPage) ? allItems.length : present + perPage;
     for(int i = present; i < min; i++){
@@ -169,7 +181,7 @@ class ModuleManagerState extends State<ModuleManager>{
     return Scaffold(
       backgroundColor: Color.fromRGBO(64, 64, 64, 100),
       body: DefaultTabController(
-        length: 4,
+        length: 3,
         child:
               NestedScrollView(
               headerSliverBuilder:
@@ -193,7 +205,6 @@ class ModuleManagerState extends State<ModuleManager>{
                       Tab(text: "Topics",),
                       Tab(text: "Elections",),
                       Tab(text: "You"),
-                      Tab(text: "Saved"),
                     ]),
                   ),
                   ),
@@ -249,8 +260,7 @@ class ModuleManagerState extends State<ModuleManager>{
                       },
                     )
                 ),
-                Text("three"),
-                Text("four"),
+                ProfilePage(0.78, 0.83),
               ],
             ),)
       ),
