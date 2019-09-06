@@ -1,15 +1,15 @@
 # Politicus
 
-Personalized political news feed.
-Looking to publish to Google Play Store and App Store by mid-September.
+Personalized political news feed. Built using Flutter and can be compiled into both Android and iOS apps.
 
 ## Features:
 * News Feed
   * Modules: Polical news feed consists of modules that include relevant news articles, congressional bills, and congressional tweets.
   * Categorization: Naive Bayes classifier used to categorize tweets and bills into modules and order them in the feed based on user preference.
   * Chips: Chips (https://material.io/components/chips/#choice-chips) for manually selecting topics.
-  * Liking: Instagram-esque liking functionality (double tap to like/unlike). Liked items are saved locally and can be viewed later.
-  ![alt text](https://i.imgur.com/g9hOMZY.png)
+  * Liking: Instagram-esque liking functionality (double tap to like/unlike). Liked items are saved locally and can be viewed later. Saved items are processed for user analytics (incl. political typology and stances on specific issues).
+  
+  * ![alt text](https://i.imgur.com/g9hOMZY.png)
 * Election Tracker
   * Polls: Scrapes the web for polling data and displays the results.
   * News: Displays latest news on the current election
